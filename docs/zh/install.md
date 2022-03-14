@@ -1,0 +1,102 @@
+# 安装方式
+
+## 安卓
+
+**方式一**，使用jar包和本地库
+1. 下载我们的jar包和jnilibs，[下载链接](https://www.baidu.com)
+
+把jar包放入 `app/libs`目录，本地so库放入 `app/jniLis`目录
+
+2. 修改`app/build.gradle`
+```groovy
+android{
+  //其他设置
+  sourceSets {
+        main {
+            jniLibs.srcDirs = ['jniLibs']
+        }
+    }
+}
+
+dependencies {
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  //下面是其他依赖库
+}
+
+```
+
+3. 在 `AndroidManifest.xml` 中添加必要的权限
+```xml
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+<uses-permission android:name="android.permission.BLUETOOTH" />
+<uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+<uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+```
+
+**方式二**，使用 aar包
+
+1. 下载我们的aar包，[下载链接](https://www.baidu.com)
+
+把aar包放入module的`app/libs`目录
+
+2. 修改`app/build.gradle`
+
+```groovy
+repositories {
+    flatDir{dirs 'libs'}
+}
+
+dependencies {
+    implementation (name: 'bravlib-x.x.x', ext: 'aar')
+
+    //下面是其他依赖库
+}
+
+```
+
+aar包内部的`AndroidManifest.xml`已经把必要的权限声明加上了，APP的`AndroidManifest.xml`可以没必要重复添加
+
+
+**方式三** 使用在线依赖包
+
+该方式暂不支持，后续将会提供
+
+## iOS
+
+由于库使用swift5编写，为了避免OC引入时，包的体积过于庞大，所以提供两个framework的包，一个是静态库，一个动态库。两个库都包含了i386,x86_64,armv7,arm64的架构，可以支持真机和模拟器。
+
+另外framework已经支持 `bitcode`，可以放心使用。
+
+**方式一**，使用静态库
+
+>该方式仅支持 Swift
+
+1. 下载我们的静态framework，[下载地址](https://www.baidu.com)
+
+2. 添加到工程目录中，并添加到对应target即可。
+
+**方式二**，使用动态库
+
+1. 下载我们的动态framework，[下载地址](https://www.baidu.com)
+
+2. 添加到工程目录中，并设置为 **Embed**
+
+![Embed](@img/img_ios_config_dynamic_embed.png)
+
+> `Embed & Sign` 或 `Embed without signing` 都可以
+
+如果遇到如下错误：
+
+> Building for iOS, but the linked and embedded framework 'BravLib.framework' was built for iOS + iOS Simulator. 
+
+可以修改在对应target的`Build Settings`中的 `Validate Workspace`，将其改为 `Yes`，然后重新运行，此时该错误就会变成警告，然后运行正常。
+
+![Validate Workspace](@img/img_ios_config_daymanic_validate_workspace.png)
+
+>此时再把其改为`No`也会正常运行
+
+
+
