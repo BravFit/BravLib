@@ -21,12 +21,62 @@ sidebar: auto
 
 获取 BleApi 的单例对象。
 
+
+## BravLogger
+
+SDK用的日志工具，可以设置日志级别和设置日志监听器
+
+**常量**
+
+- public static final int LOG_LEVEL_NONE = 0;
+- public static final int LOG_LEVEL_ERROR = 1;
+- public static final int LOG_LEVEL_ALL = 2;
+
+用来表示日志的级别，其中 `LOG_LEVEL_NONE` 表示在控制台不打印任何日志， `LOG_LEVEL_ERROR` 表示指打印错误日志， `LOG_LEVEL_ALL`表示打印所有日志
+
+### loggerLevel
+- 类型 Int  class级别变量
+日志级别，可读可写。设置后可以印象SDK在控制台打印的日志
+> 请使用上述3个常量来设置
+
+### setLoggerListener 
+- 类型 (loggerListener:[BravLoggerListener](#bravloggerlistener))
+> 仅安卓可用
+
+设置日志监听器，会把日志回调给 loggerListener
+
+### loggerDelegate
+- 类型 [BravLoggerDelegate](#bravloggerdelegate)
+> 仅iOS可用
+
+设置日志监听器，会把日志回调给 loggerDelegate
+
+
+## BravLoggerListener
+日志监听器，同 BravLoggerDelegate
+
+## BravLoggerDelegate
+
+日志监听器
+
+### onLog
+- 类型 (tag:String, text:String)->void
+
+回调普通调试日志
+
+### onError
+
+- 类型 (tag:String, text:String)->void
+
+回调错误日志信息
+
 ## BravBleApi
 
 - 方法
 
-**getBleEnableState**
-  - 类型 ()-> BravBleEnableState
+### getBleEnableState
+
+- 类型 ()-> [BravBleEnableState](#bravbleenablestate)
 
 返回蓝牙的状态
 
@@ -69,10 +119,10 @@ sidebar: auto
 
 连接设备，并返回是否操作成功。
 
-- 类型 (device:BravDevice,
+- 类型 (device:[BravDevice](#bravdevice),
   options:Any, 
   deviceEventListener:BravDeviceEventListener,
-  connectionChangeListener:[BravBleConnectionEventListener/BravBleConnectionEventDelegate](#bravbleconnectioneventdelegate) )->void
+  connectionChangeListener:[BravBleConnectionEventListener/BravBleConnectionEventDelegate](#bravbleconnectioneventdelegate) )->BravResult
 
 参数说明：
 
@@ -81,6 +131,15 @@ sidebar: auto
  - deviceEventListener 设备事件监听器，请使用 [BravScaleEventListener/BravScaleEventDelegate](#bravscaleeventdelegate)，来连接体脂秤
  - connectionChangeListener 用来监听设备连接状态的变化，是一个便捷API，可以传null/nil
 
+ 连接成功或断开连接会在[BravBleConnectionEventListener/BravBleConnectionEventDelegate](#bravbleconnectioneventdelegate)回调
+
+### disconnectDevice
+
+ 断开连接设备
+
+- 类型 (deviceId:String) ->void
+
+断开连接的设备，断开连接会在[BravBleConnectionEventListener/BravBleConnectionEventDelegate](#bravbleconnectioneventdelegate)回调
 ## BravBleEventListener
 同 `BravBleEventDelegate`
 
@@ -544,3 +603,30 @@ BMI
 类型 泛型
 
 根据不同的操作表示不同的类型
+
+**工具方法**
+
+## BravUtils
+
+### toPrecision
+- 类型：(value:Double , scale:Int)->Double
+将 `value` 精确到 `scale` 个小数位
+
+### kg2jin
+- 类型 (value:Double)->Double
+单位转换方法
+### jin2kg
+- 类型 (value:Double)->Double
+单位转换方法
+### kg2lb
+- 类型 (value:Double)->Double
+单位转换方法
+### lb2kg
+- 类型 (value:Double)->Double
+单位转换方法
+### jin2lb
+- 类型 (value:Double)->Double
+单位转换方法
+### lb2jin
+- 类型 (value:Double)->Double
+单位转换方法

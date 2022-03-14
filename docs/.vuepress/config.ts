@@ -43,6 +43,32 @@ const themeConfig = {
           {
             text: '快速上手',
             link: '/zh/quick_start.md',
+            children: [
+              {
+                text: '初始化',
+                link: '/zh/quick_start.md#初始化',
+              },
+              {
+                text: '前期工作',
+                link: '/zh/quick_start.md#前期工作',
+              },
+              {
+                text: '扫描设备',
+                link: '/zh/quick_start.md#扫描设备',
+              },
+              {
+                text: '连接设备',
+                link: '/zh/quick_start.md#连接设备',
+              },
+              {
+                text: '测量界面逻辑处理',
+                link: '/zh/quick_start.md#测量界面逻辑处理',
+              },
+              {
+                text: '展示测量报告',
+                link: '/zh/quick_start.md#展示测量报告',
+              },
+            ],
           },
         ],
       },
