@@ -17,6 +17,76 @@ const themeConfig = {
   locales: {
     '/': {
       selectLanguageName: 'English',
+      sidebar: {
+        '/': [
+          {
+            text: 'Guide',
+            link: '/',
+          },
+          {
+            text: 'Installation',
+            link: '/install.md',
+            children: [
+              {
+                text: '安卓',
+                link: '/install.md#android',
+              },
+              {
+                text: 'iOS',
+                link: '/install.md#ios',
+              },
+            ],
+          },
+          {
+            text: 'Quick start',
+            link: '/quick_start.md',
+            children: [
+              {
+                text: 'Initial',
+                link: '/quick_start.md#initial',
+              },
+              {
+                text: 'Prepared',
+                link: '/quick_start.md##preliminary-work',
+              },
+              {
+                text: 'Scan device',
+                link: '/quick_start.md#scan-device',
+              },
+              {
+                text: 'Connect device',
+                link: '/quick_start.md#connect-device',
+              },
+              {
+                text: 'Measurement interface logic processing',
+                link: '/quick_start.md#measurement-interface-logic-processing',
+              },
+              {
+                text: 'Show measurement report',
+                link: '/quick_start.md#show-measurement-report',
+              },
+            ],
+          },
+        ],
+      },
+      navbar: [
+        {
+          text: 'Guide',
+          link: '/',
+        },
+        {
+          text: 'API',
+          link: '/api.md',
+        },
+        {
+          text: 'FAQ',
+          link: '/faq.md',
+        },
+        {
+          text: 'Change Log',
+          link: 'https://www.github.com',
+        },
+      ],
     },
     '/zh/': {
       selectLanguageName: '简体中文',
@@ -85,11 +155,16 @@ const themeConfig = {
           text: '常见问题',
           link: '/zh/faq.md',
         },
+        {
+          text: '更新记录',
+          link: 'https://www.github.com',
+        },
       ],
     },
   },
 };
 const vuePressConfig = {
+  head: [['link', { rel: 'icon', href: '../img/app_76.png' }]],
   locales: localesConfig,
   themeConfig,
   alias: {

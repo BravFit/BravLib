@@ -614,19 +614,25 @@ BMI
 
 ### kg2jin
 - 类型 (value:Double)->Double
+
 单位转换方法
 ### jin2kg
 - 类型 (value:Double)->Double
+
 单位转换方法
 ### kg2lb
 - 类型 (value:Double)->Double
+
 单位转换方法
 ### lb2kg
 - 类型 (value:Double)->Double
+
 单位转换方法
 ### jin2lb
 - 类型 (value:Double)->Double
+
 单位转换方法
 ### lb2jin
 - 类型 (value:Double)->Double
+
 单位转换方法
