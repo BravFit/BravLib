@@ -165,6 +165,7 @@ const themeConfig = {
 };
 const vuePressConfig = {
   base: '/BravLib/',
+  title: 'BravLib',
   head: [['link', { rel: 'icon', href: '../img/app_76.png' }]],
   locales: localesConfig,
   themeConfig,
