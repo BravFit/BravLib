@@ -1,7 +1,7 @@
 ---
 sidebar: auto
 ---
-# common problem
+# FAQ
 
 ## APP logic design related
 ### Do you need to bind or pair the device？
@@ -74,4 +74,4 @@ Compare whether all attributes in [BravScaleUser](api.md#bravscaleuser) are comp
 ### How to troubleshoot when the Bluetooth connection is abnormal in the online version
 First find out the user's mobile phone model, if possible, try to use the same model as the customer to test.
 
-Register the log output interface [QNLogListener](../api/QNLogListener.md), record relevant logs (log files can be saved), and send them to our developers for analysis.
+Register the log output interface [QNLogListener](api/QNLogListener.md), record relevant logs (log files can be saved), and send them to our developers for analysis.
