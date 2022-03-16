@@ -76,7 +76,15 @@ aar包内部的`AndroidManifest.xml`已经把必要的权限声明加上了，AP
 
 1. 下载我们的静态framework，[下载地址](https://www.baidu.com)
 
-2. 添加到工程目录中，并添加到对应target即可。
+2. 添加到工程目录中，并添加到对应target。
+
+3. 在 Builder Setting 中，添加framework中的头文件目录
+
+```
+Header search paths = $(PROJECT_DIR)/BravLibDemoIOS/libs/BravLib.framework/Headers
+```
+
+![Embed](@img/img_ios_config_headers.png)
 
 **方式二**，使用动态库
 
@@ -94,9 +102,23 @@ aar包内部的`AndroidManifest.xml`已经把必要的权限声明加上了，AP
 
 可以修改在对应target的`Build Settings`中的 `Validate Workspace`，将其改为 `Yes`，然后重新运行，此时该错误就会变成警告，然后运行正常。
 
-![Validate Workspace](@img/img_ios_config_daymanic_validate_workspace.png)
+![Validate Workspace](@img/img_ios_config_dynamic_validate_workspace.png)
 
 >此时再把其改为`No`也会正常运行
 
+OC项目在添加时，建议使用动态链接库，以减小ipa包的体积，如果遇到如下错误：
+
+![Error without swift](@img/img_ios_oc_error.png)
+
+这是因为OC环境没有swift的运行时导致的。建议在OC项目下创建一个 `swift` 文件，然后xcode会自动生成 `桥接头文件`，然后 `clean` 项目，再重新运行即可。
+
+刚创建的swift文件可以删除，`桥接头文件`也可以没有内容。
 
 
+**请注意**
+无论使用何种方式，都需要在 `info.plist` 中添加对使用蓝牙的申明
+```xml
+<key>NSBluetoothAlwaysUsageDescription</key>
+<string>For connect smart device</string>
+```
+![Bluetooth](@img/img_ios_config_bluetooth_permission.png)

@@ -21,6 +21,6 @@
 
 ## 示例程序
 
-[安卓](https://www.github.com/)
+[安卓](https://github.com/BravFit/BravLibDemoAndroid)
 
-[iOS](https://www.github.com/)
+[iOS](https://github.com/BravFit/BravLibDemoIOS)

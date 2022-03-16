@@ -301,4 +301,4 @@ class MeasureModel:BravScaleEventDelegate,BravBleConnectionChangeDelegate{
 
 ## 展示测量报告
 
-安卓 demo，有展示如何显示测量报告的方法
+安卓和iOS的 demo中，有展示如何显示测量报告的方法，参考demo，然后设计一套漂亮的UI就可以展示报告了
