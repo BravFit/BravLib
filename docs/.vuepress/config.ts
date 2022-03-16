@@ -84,7 +84,7 @@ const themeConfig = {
         },
         {
           text: 'Change Log',
-          link: 'https://www.github.com',
+          link: 'https://github.com/BravFit/BravLib/releases',
         },
       ],
     },
@@ -157,7 +157,7 @@ const themeConfig = {
         },
         {
           text: '更新记录',
-          link: 'https://www.github.com',
+          link: 'https://github.com/BravFit/BravLib/releases',
         },
       ],
     },

@@ -38,7 +38,7 @@ dependencies {
 
 **Method 2**, using the aar package
 
-1. Download our aar package, [download link](https://www.baidu.com)
+1. Download our aar package, [download link](https://github.com/BravFit/BravLib/releases)
 
 Put the aar package into the `app/libs` directory of the module
 
@@ -74,7 +74,7 @@ In addition, the framework already supports `bitcode`, so you can use it with co
 
 > This method only supports Swift
 
-1. Download our static framework, [download address](https://www.baidu.com)
+1. Download our static framework, [download link]()
 
 2. Add it to the project directory and add it to the corresponding target.
 
@@ -88,7 +88,7 @@ Header search paths = $(PROJECT_DIR)/BravLibDemoIOS/libs/BravLib.framework/Heade
 
 **Method 2**, using the dynamic library
 
-1. Download our dynamic framework, [download address](https://www.baidu.com)
+1. Download our dynamic framework, [download link](https://github.com/BravFit/BravLib/releases)
 
 2. Add to the project directory and set to **Embed**
 
