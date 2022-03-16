@@ -28,7 +28,7 @@ const themeConfig = {
             link: '/install.md',
             children: [
               {
-                text: '安卓',
+                text: 'Android',
                 link: '/install.md#android',
               },
               {
@@ -42,12 +42,12 @@ const themeConfig = {
             link: '/quick_start.md',
             children: [
               {
-                text: 'Initial',
-                link: '/quick_start.md#initial',
+                text: 'Initialize',
+                link: '/quick_start.md#initialize',
               },
               {
-                text: 'Prepared',
-                link: '/quick_start.md##preliminary-work',
+                text: 'Preliminary work',
+                link: '/quick_start.md#preliminary-work',
               },
               {
                 text: 'Scan device',
@@ -164,6 +164,7 @@ const themeConfig = {
   },
 };
 const vuePressConfig = {
+  base: 'BravLib',
   head: [['link', { rel: 'icon', href: '../img/app_76.png' }]],
   locales: localesConfig,
   themeConfig,
