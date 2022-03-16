@@ -1,4 +1,4 @@
-# Baile Fu SDK documentation
+# Brav SDK documentation
 
 It is used to assist the connection of electronic products of Baile Fu, including `body fat scale`, sphygmomanometer, etc.
 
