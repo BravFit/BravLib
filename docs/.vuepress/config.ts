@@ -25,45 +25,45 @@ const themeConfig = {
           },
           {
             text: 'Installation',
-            link: '/install.md',
+            link: '/install',
             children: [
               {
                 text: 'Android',
-                link: '/install.md#android',
+                link: '/install#android',
               },
               {
                 text: 'iOS',
-                link: '/install.md#ios',
+                link: '/install#ios',
               },
             ],
           },
           {
             text: 'Quick start',
-            link: '/quick_start.md',
+            link: '/quick_start',
             children: [
               {
                 text: 'Initialize',
-                link: '/quick_start.md#initialize',
+                link: '/quick_start#initialize',
               },
               {
                 text: 'Preliminary work',
-                link: '/quick_start.md#preliminary-work',
+                link: '/quick_start#preliminary-work',
               },
               {
                 text: 'Scan device',
-                link: '/quick_start.md#scan-device',
+                link: '/quick_start#scan-device',
               },
               {
                 text: 'Connect device',
-                link: '/quick_start.md#connect-device',
+                link: '/quick_start#connect-device',
               },
               {
                 text: 'Measurement interface logic processing',
-                link: '/quick_start.md#measurement-interface-logic-processing',
+                link: '/quick_start#measurement-interface-logic-processing',
               },
               {
                 text: 'Show measurement report',
-                link: '/quick_start.md#show-measurement-report',
+                link: '/quick_start#show-measurement-report',
               },
             ],
           },
@@ -76,11 +76,11 @@ const themeConfig = {
         },
         {
           text: 'API',
-          link: '/api.md',
+          link: '/api',
         },
         {
           text: 'FAQ',
-          link: '/faq.md',
+          link: '/faq',
         },
         {
           text: 'Change Log',
@@ -98,45 +98,45 @@ const themeConfig = {
           },
           {
             text: '安装方式',
-            link: '/zh/install.md',
+            link: '/zh/install',
             children: [
               {
                 text: '安卓',
-                link: '/zh/install.md#安卓',
+                link: '/zh/install#安卓',
               },
               {
                 text: 'iOS',
-                link: '/zh/install.md#ios',
+                link: '/zh/install#ios',
               },
             ],
           },
           {
             text: '快速上手',
-            link: '/zh/quick_start.md',
+            link: '/zh/quick_start',
             children: [
               {
                 text: '初始化',
-                link: '/zh/quick_start.md#初始化',
+                link: '/zh/quick_start#初始化',
               },
               {
                 text: '前期工作',
-                link: '/zh/quick_start.md#前期工作',
+                link: '/zh/quick_start#前期工作',
               },
               {
                 text: '扫描设备',
-                link: '/zh/quick_start.md#扫描设备',
+                link: '/zh/quick_start#扫描设备',
               },
               {
                 text: '连接设备',
-                link: '/zh/quick_start.md#连接设备',
+                link: '/zh/quick_start#连接设备',
               },
               {
                 text: '测量界面逻辑处理',
-                link: '/zh/quick_start.md#测量界面逻辑处理',
+                link: '/zh/quick_start#测量界面逻辑处理',
               },
               {
                 text: '展示测量报告',
-                link: '/zh/quick_start.md#展示测量报告',
+                link: '/zh/quick_start#展示测量报告',
               },
             ],
           },
@@ -149,11 +149,11 @@ const themeConfig = {
         },
         {
           text: 'api',
-          link: '/zh/api.md',
+          link: '/zh/api',
         },
         {
           text: '常见问题',
-          link: '/zh/faq.md',
+          link: '/zh/faq',
         },
         {
           text: '更新记录',
