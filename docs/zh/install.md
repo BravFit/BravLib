@@ -122,3 +122,14 @@ OC项目在添加时，建议使用动态链接库，以减小ipa包的体积，
 <string>For connect smart device</string>
 ```
 ![Bluetooth](@img/img_ios_config_bluetooth_permission.png)
+
+
+## 微信小程序
+
+微信小程序需要使用插件来接入，我们有专门提供插件，该插件不用申请，可直接使用。
+
+插件的appid为：`wx283194ba123397e5`
+
+集成方式请参考微信官方文档 [使用插件](https://developers.weixin.qq.com/miniprogram/dev/framework/plugin/using.html)
+
+Demo 中有提供typescript的类型文件（.d.ts），为 `TypeScript` 类型的小程序提供类型辅助。具体目录是Demo项目中的 `miniprogram/lib/bravlib/types`

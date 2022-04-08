@@ -8,15 +8,18 @@
 
 入口是： [BravApiProvider](./api.md#bravapiprovider)
 
-最好可以设置下日志监听器，把SDK的日志记录下，用以后续排查问题
+最好可以设置下日志监听器，把 SDK 的日志记录下，用以后续排查问题
 
-**安卓**
+> 文档不提供 `Java` , `Objective-C`和 `JavaScript` 代码示例，请自行根据 `Kotlin` , `Swift` 和 `TypeScript` 转化
+
+### 安卓
 
 需要先调用 [BravApiProvider.initSharedBleApi(Context)](api.md#initsharedbleapi)
 
 之后可以使用 [BravApiProvider.sharedBleApi()](api.md#sharedbleapi)来获取蓝牙 API 对象
 
 ```kotlin
+//这一段是设置日志，可以根据自身请决定是否设置
 BravLogger.loggerLevel = BravLogger.LOG_LEVEL_ALL
 BravLogger.setLoggerListener(object :BravLoggerListener{
     override fun onLog(tag: String?, text: String?) {
@@ -37,7 +40,7 @@ val bleApi = BravApiProvider.sharedBleApi()
 
 ```
 
-**iOS**
+### iOS
 
 ```swift
 import BravLib
@@ -46,16 +49,47 @@ BravLogger.loggerLevel = BravLogger.LOG_LEVEL_ALL
 BravLogger.loggerDelegate = loggerDelegate
 
 BravApiProvider.initSharedBleApi()
-        
+
 let bleApi = BravApiProvider.sharedBleApi
 
 
 ```
 
-> 文档不提供 Java和Objective-C 代码示例，请自行根据kotlin和swift转化
+### 小程序
+
+通常会在`app.js`或`app.ts`进行初始化。
+
+这里在`app.json`配置的插件名称为：`brav-lib`
+
+```typescript
+// app.ts
+const BravPlugin = requirePlugin('brav-lib');
+const { BravApiProvider } = BravPlugin;
+
+App<IAppOption>({
+  globalData: {},
+  onLaunch() {
+    BravApiProvider.initSharedBleApi({ mode: 'miniprogram', mpwx: wx });
+  },
+});
+```
+> 这里把小程序的 wx 传入了插件中，这是因为插件的wx对象在蓝牙api方面有局限性（无法发射广播），所以需要传入小程序的wx对象，不过在插件中，用且仅用到蓝牙相关API
+
+```typescript
+// page/index/index.ts
+import BravLibType from '../../lib/bravlib/types/typings';
+const BravPlugin = requirePlugin('brav-lib');
+const { BravApiProvider, BravScaleDataImpl } = BravPlugin;
+
+this.bleApi = BravApiProvider.sharedBleApi;
+
+});
+
+```
+
 ## 前期工作
 
-**安卓**
+### 安卓
 
 1. 检查 APP 是否已经获得到了定位权限，如果没有权限，则需要进行权限的申请。
 
@@ -107,18 +141,67 @@ if(this.bleApi.bleEnableState != BravBleEnableState.Enable){
 }
 ```
 
-**iOS**
+### iOS
 
-初始化API后，需要等到 [BravBleEventDelegate.onBleEnableStateChange] 中回调 `state == BravBleEnableState.Enable` 才能进行蓝牙扫描。
+初始化 API 后，需要等到 [BravBleEventDelegate.onBleEnableStateChange] 中回调 `state == BravBleEnableState.Enable` 才能进行蓝牙扫描。
 
-iOS的机制在初始化后，一般会延迟100-500ms回调，如果想初始化后马上使用的话，可以做个延时处理。
+iOS 的机制在初始化后，一般会延迟 100-500ms 回调，如果想初始化后马上使用的话，可以做个延时处理。
 
+### 小程序
+
+在小程序中，需要额外判断是否已获取微信的蓝牙权限。具体可以参考如下代码（demo中有演示）：
+
+```typescript
+//检查各个权限是否正常
+  async checkPermission() {
+    const systemInfo = await wx.getSystemInfo();
+    const appAuthorizeSetting = wx.getAppAuthorizeSetting();
+    if (systemInfo.platform === 'ios') {
+      if (appAuthorizeSetting.bluetoothAuthorized === 'denied') {
+        //微信获得系统的蓝牙授权
+        this.updateState('IOS未获得系统蓝牙权限');
+        return false;
+      }
+    } else if (systemInfo.platform === 'android') {
+      if (appAuthorizeSetting.locationAuthorized === 'denied') {
+        this.updateState('Android未获得系统定位权限，无法使用蓝牙');
+        return false;
+      } else if (appAuthorizeSetting.locationAuthorized === 'authorized') {
+        const systemSetting = wx.getSystemSetting();
+        if (!systemSetting.locationEnabled) {
+          //系统定位服务未启动，
+          this.updateState('安卓未打开定位开关，无法使用');
+          return false;
+        }
+      }
+    } else {
+      this.updateState('暂不支持该系统');
+      return false;
+    }
+
+    const authSetting = (await wx.getSetting({})).authSetting;
+    console.log('获取到的权限为：', appAuthorizeSetting, authSetting);
+    if (!authSetting['scope.bluetooth']) {
+      //没有蓝牙权限，则向用户申请
+      try {
+        await wx.authorize({ scope: 'scope.bluetooth' });
+        console.log('授权成功');
+      } catch (e) {
+        //授权失败
+        this.updateState('微信蓝牙权限授权失败');
+        return false;
+      }
+    }
+    return true;
+  },
+```
 
 ## 扫描设备
 
 使用[BravBleApi.startScan](api.md#startscan)进行蓝牙扫描
 
-**安卓**
+### 安卓
+
 ```kotlin
 
 private val bleEventListener = object : BravBleEventListener {
@@ -150,25 +233,27 @@ this.bleApi.startScan(BravScanOptions())
 this.bleApi.stopScan();
 
 ```
-**iOS**
+
+### iOS
+
 ```swift
 class BleModel: ObservableObject, BravBleEventDelegate{
     let tag = "BleModel"
-    
-    
+
+
     func onBleEnableStateChange(state: BleEnableState) {
         BravLogger.log(tag,"onBleEnableStateChange: ",state.rawValue)
         self.bleEnableState = state
     }
-    
+
     func onBravDeviceFound(device: BravDevice) {
         BravLogger.log(tag,"device found \(device.mac)")
     }
-    
+
     func onConnectionChange(deviceId: String, state: BravDeviceConnectionState) {
        BravLogger.log(tag,"connection state change：\(deviceId) \(state)")
     }
-    
+
 }
 
 self.bleApi.setBleEventListener(BleModel())
@@ -186,6 +271,59 @@ self.bleApi.stopScan()
 
 > 目前 SDK 仅支持体脂秤，所以 device.category 都为 [BravDeviceCategory](api.md#bravdevicecategory) 设备对象都是 [BravScaleDevice](./api.md#bravscaledevice)
 
+### 小程序
+
+```typescript
+//在 onload 中
+this.bleApi.bleEventDelegate = this.bleEventListener();
+
+//定义蓝牙事件监听器
+bleEventListener() {
+    const onBravDeviceFound = (device: BravLibType.BravDevice) => {
+      // console.log('发现设备：', device);
+      this.handlerConnect(device);
+    };
+    /**
+     * 监听蓝牙状态发生变化回调，连接成功或断开连接都会出触发
+     */
+    const onBleEnableStateChange = (state: BravLibType.BravBleEnableState) => {
+      if (state === 'Enable') {
+        this.updateState('蓝牙可用，空闲');
+        this.doStartScan();
+      } else {
+        this.updateState('蓝牙不可用');
+      }
+      this.setData({
+        available: state === 'Enable',
+        state: 'paused',
+      });
+    };
+
+    /**
+     * 	监听设备连接成功回调
+     */
+    const onConnectionChange = (
+      deviceId: string,
+      state: BravLibType.BravDeviceConnectionState
+    ) => {
+      console.log('设备连接状态变化', deviceId, state);
+      // this.connecting = false;
+      const connected = state === 'Connected';
+      this.updateState(connected ? '已连接' : '未连接');
+      this.setData({
+        connected,
+        state: connected ? 'running' : 'paused',
+      });
+    };
+    return {
+      onBravDeviceFound,
+      onBleEnableStateChange,
+      onConnectionChange,
+    };
+  },
+
+```
+
 ## 连接设备
 
 需要根据不同的设备类型使用不同的事件监听接口以及可选项。
@@ -193,7 +331,22 @@ self.bleApi.stopScan()
 **连接体脂秤**
 
 
-**安卓**
+使用 [BravBleApi.connectDevice](api.md#connectdevice) 方法
+
+- options [BravScaleDataOptions](./api.md#bravscaledataoptions)，它需要传入 [user:BravUser](api.md#bravscaleuser) 对象和 [unit:BravScaleUnit](api.md#bravscaleunit)
+- scaleEventLister 是 [BravScaleEventListener](./api.md#bravscaleeventlistener) 对象，用来接收体脂秤数据回调
+
+  > 其中 `user` 用来传入体脂秤用户信息，这里会用来计算身体数据，`unit`，用来设置体脂秤的称重单位
+
+- connectionChangeListener 是 [BravBleConnectionChangeListener](./api.md#bravbleconnectionchangelistener) 对象，用来接收设备连接状态的变化，为方便处理测量界面逻辑增加的冗余接口，可以传 null
+- 返回值： [BroadcastScaleHandler](./api.md#broadcastscalehandler) 暂时无用
+
+测量结束后，APP 会在 BravScaleEventListener 的 onMeasureComplete 方法收到完整的测量数据 [BravScaleData](./api.md#bravscaledata) ，收到后，表示用户已经测量完成。
+
+如果用户离开测量界面或者想要结束测量，则可以调用 [BravBleApi.disconnectDevice](api.md#disconnectdevice) 来断开和设备的连接。
+
+### 安卓
+
 ```kotlin
 private val connectionChangeListener =
         BravBleConnectionChangeListener { deviceId, state ->
@@ -244,25 +397,25 @@ fun doConnect(){
 }
 ```
 
-**iOS**
+### iOS
 
 ```swift
 class MeasureModel:BravScaleEventDelegate,BravBleConnectionChangeDelegate{
-  
+
   let tag = "MeasureModel"
   func onGetUnsteadyWeight(_ deviceId: String, _ weight: Double) {
         BravLogger.log(tag,"onGetUnsteadyWeight：\(weight) %")
     }
-    
+
     func onMeasureComplete(_ deviceId: String, _ scaleData: BravScaleData) {
 
         BravLogger.log(tag,"Measure compliete bodyfat percentage：\(scaleData.bodyfatRate) %")
     }
-    
+
     func onGetOfflineData(_ deviceId: String, _ scaleDataList: [BravOriginData]) {
         BravLogger.log(tag, "Received： \(scaleDataList.count)")
     }
-    
+
     func onConnectionChange(deviceId: String, state: BravDeviceConnectionState) {
         BravLogger.log(tag,"connection state change：\(deviceId) \(state)")
     }
@@ -271,25 +424,45 @@ class MeasureModel:BravScaleEventDelegate,BravBleConnectionChangeDelegate{
  func doConnect(){
     let user = BravScaleUser(gender:.Female,height:180,age:30)
     let options = BravScaleDataOptions(user:user ,unit: .kg)
-    
+
     let _ = self.bleApi.connectDevice(deviceId: self.device.deviceId, options:options , listener: self.measureModel, connectionChangeListener: self.measureModel)
 }
 ```
+### 小程序
 
+```typescript
+ async handlerConnect(device: BravLibType.BravDevice) {
+    const { height, gender, age, connected } = this.data;
+    if (this.connecting || connected) {
+      console.log('当前正在连接，不再处理');
+      return;
+    }
+    this.connecting = true;
+    const birthday = new Date();
+    birthday.setFullYear(birthday.getFullYear() - age);
+    const user = {
+      height,
+      gender,
+      age: 30,
+    } as BravLibType.BravScaleUser;
 
-使用 [BravBleApi.connectDevice](api.md#connectdevice) 方法
+    /**
+     * 调用连接成功后，会返回本次连接的设备访问对象，可以对设备进行一些蓝牙数据通讯
+     * 每次连接返回的都不一样，连接成功后，该对象开始可以操作，连接失败或断开后，该对象会失效
+     */
+    console.log('要连接的对象', device.deviceId);
+    let ret = await this.bleApi.connectDevice(
+      device.deviceId,
+      { user, unit: 'kg' },
+      this.deviceEventListener()
+    );
+    if (ret.isSuccess) {
+      this.deviceHandler = ret.data as BravLibType.BravDeviceHandler;
+    }
 
-- options [BravScaleDataOptions](./api.md#bravscaledataoptions)，它需要传入 [user:BravUser](api.md#bravscaleuser) 对象和 [unit:BravScaleUnit](api.md#bravscaleunit)
-- scaleEventLister 是 [BravScaleEventListener](./api.md#bravscaleeventlistener) 对象，用来接收体脂秤数据回调
+  },
+```
 
-  > 其中 `user` 用来传入体脂秤用户信息，这里会用来计算身体数据，`unit`，用来设置体脂秤的称重单位
-
-- connectionChangeListener 是 [BravBleConnectionChangeListener](./api.md#bravbleconnectionchangelistener) 对象，用来接收设备连接状态的变化，为方便处理测量界面逻辑增加的冗余接口，可以传 null
-- 返回值： [BroadcastScaleHandler](./api.md#broadcastscalehandler) 暂时无用
-
-测量结束后，APP 会在 BravScaleEventListener 的 onMeasureComplete 方法收到完整的测量数据 [BravScaleData](./api.md#bravscaledata) ，收到后，表示用户已经测量完成。
-
-如果用户离开测量界面或者想要结束测量，则可以调用 [BravBleApi.disconnectDevice](api.md#disconnectdevice) 来断开和设备的连接。
 
 ## 测量界面逻辑处理
 
@@ -299,6 +472,10 @@ class MeasureModel:BravScaleEventDelegate,BravBleConnectionChangeDelegate{
 
 测量结束后，建议立即展示测量报告，让用户可以对刚才的测量数据进行查看。
 
+安卓和iOS的 Demo中，扫描到设备会展示一个列表，点击才会进行连接。
+
+小程序的 Demo中，扫描到设备会立即进行连接。具体以何种方式，可以结合自身业务需求来
+
 ## 展示测量报告
 
-安卓和iOS的 demo中，有展示如何显示测量报告的方法，参考demo，然后设计一套漂亮的UI就可以展示报告了
+各 demo 中，有展示如何显示测量报告的方法，参考 demo，然后设计一套漂亮的 UI 就可以展示报告了。

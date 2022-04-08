@@ -108,6 +108,10 @@ const themeConfig = {
                 text: 'iOS',
                 link: '/zh/install#ios',
               },
+              {
+                text: '微信小程序',
+                link: '/zh/install#微信小程序',
+              },
             ],
           },
           {
