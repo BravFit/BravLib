@@ -3,7 +3,7 @@
 ## Android
 
 **method one**, using jar packages and native libraries
-1. Download our jar package and jnilibs, [download link](https://www.baidu.com)
+1. Download our jar package and jnilibs, [download link](https://github.com/BravFit/BravLib/releases)
 
 Put the jar package into the `app/libs` directory, and the local so library into the `app/jniLis` directory
 

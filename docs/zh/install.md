@@ -3,7 +3,7 @@
 ## 安卓
 
 **方式一**，使用jar包和本地库
-1. 下载我们的jar包和jnilibs，[下载链接](https://www.baidu.com)
+1. 下载我们的jar包和jnilibs，[下载链接](https://github.com/BravFit/BravLib/releases)
 
 把jar包放入 `app/libs`目录，本地so库放入 `app/jniLis`目录
 
@@ -38,7 +38,7 @@ dependencies {
 
 **方式二**，使用 aar包
 
-1. 下载我们的aar包，[下载链接](https://www.baidu.com)
+1. 下载我们的aar包，[下载链接](https://github.com/BravFit/BravLib/releases)
 
 把aar包放入module的`app/libs`目录
 
@@ -74,7 +74,7 @@ aar包内部的`AndroidManifest.xml`已经把必要的权限声明加上了，AP
 
 >该方式仅支持 Swift
 
-1. 下载我们的静态framework，[下载地址](https://www.baidu.com)
+1. 下载我们的静态framework，[下载地址](https://github.com/BravFit/BravLib/releases)
 
 2. 添加到工程目录中，并添加到对应target。
 
@@ -88,7 +88,7 @@ Header search paths = $(PROJECT_DIR)/BravLibDemoIOS/libs/BravLib.framework/Heade
 
 **方式二**，使用动态库
 
-1. 下载我们的动态framework，[下载地址](https://www.baidu.com)
+1. 下载我们的动态framework，[下载地址](https://github.com/BravFit/BravLib/releases)
 
 2. 添加到工程目录中，并设置为 **Embed**
 
